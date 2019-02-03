@@ -29,11 +29,6 @@ class Path
         return self::$storagePath . ($path ? $path . DS : '');
     }
 
-    public static function cookie($path = '')
-    {
-        return self::$storagePath . 'cookie' . DS . ($path ? $path . DS : '');
-    }
-
     public static function csv($path = '')
     {
         return self::$storagePath . 'csv' . DS . ($path ? $path . DS : '');
