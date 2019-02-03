@@ -1,0 +1,26 @@
+version: "2.0"
+
+volumes:
+    discover-data-redis-data:
+        driver: local
+
+services:
+    app:
+        container_name: discover-data-app
+        build: .
+        command: php index.php
+        volumes:
+            - .:/usr/src/app
+        ports:
+            - "80:8080"
+        links:
+            - cache
+
+    cache:
+        image: redis:4.0
+        container_name: discover-data-redis
+        command: --appendonly yes
+        volumes:
+            - discover-data-redis-data:/data
+        ports:
+            - "6379:6379"

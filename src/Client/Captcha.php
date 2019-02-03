@@ -2,7 +2,7 @@
 
 namespace DiscoverData\Client;
 
-class Captcha implements ClientInterface
+class Captcha
 {
 
 }

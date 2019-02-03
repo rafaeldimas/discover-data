@@ -1,35 +1,6 @@
 <?php
 
-require_once __DIR__.'/vendor/autoload.php';
-
-use Dotenv\Dotenv;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\ClientException;
-use GuzzleHttp\HandlerStack;
-use GuzzleHttp\Handler\CurlHandler;
-use Psr\Http\Message\ResponseInterface;
-use Psr\Http\Message\RequestInterface;
-use Concat\Http\Middleware\RateLimitProvider;
-use Concat\Http\Middleware\RateLimiter;
-
-$dotenv = Dotenv::create(__DIR__);
-$dotenv->load();
-
-class Cache
-{
-    static public $cache = [];
-
-    public static function get($key)
-    {
-        return self::$cache[$key] ?? null;
-    }
-
-    public static function put($key, $value)
-    {
-        self::$cache[$key] = $value;
-        return self::get($key);
-    }
-}
+require_once __DIR__.DIRECTORY_SEPARATOR.'bootstrap/app.php';
 
 $cnpjs = [
     '27865757000102',
