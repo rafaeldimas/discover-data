@@ -2,6 +2,8 @@
 
 require_once __DIR__.DIRECTORY_SEPARATOR.'bootstrap/app.php';
 
+\DiscoverData\App::init();
+
 $cnpjs = [
     '27865757000102',
     '07282380000143',

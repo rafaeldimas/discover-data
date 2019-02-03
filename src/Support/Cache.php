@@ -14,7 +14,9 @@ class Cache
     public static function init()
     {
         return new Client([
-            'host' => 'cache',
+            'host' => Config::get('cache.redis_host'),
+            'port' => Config::get('cache.redis_port'),
+            'password' => Config::get('cache.redis_password'),
         ]);
     }
 

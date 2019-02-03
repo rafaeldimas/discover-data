@@ -3,9 +3,17 @@
 namespace DiscoverData\Client;
 
 use DiscoverData\Support\Path;
+use DiscoverData\Traits\Cache;
 
 class Receita
 {
+    use Cache;
+
+    public function __construct()
+    {
+        $this->initCache();
+    }
+
     public function requestCaptcha()
     {
         //
