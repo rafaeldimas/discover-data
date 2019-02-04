@@ -17,6 +17,7 @@ class Cache
             'host' => Config::get('cache.redis_host'),
             'port' => Config::get('cache.redis_port'),
             'password' => Config::get('cache.redis_password'),
+            'database' => Config::get('cache.redis_database'),
         ]);
     }
 

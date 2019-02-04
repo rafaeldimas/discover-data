@@ -1,6 +1,6 @@
 <?php
 
 return [
-    'url_request' => getenv('URL_REQUEST'),
-    'url_captcha' => getenv('URL_CAPTCHA'),
+    'request' => env('RECEITA_URL_REQUEST'),
+    'captcha' => env('RECEITA_URL_CAPTCHA'),
 ];
