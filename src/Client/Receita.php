@@ -5,6 +5,8 @@ namespace DiscoverData\Client;
 use DiscoverData\Support\Cache;
 use DiscoverData\Support\Config;
 use GuzzleHttp\Client;
+use GuzzleHttp\Cookie\CookieJar;
+use GuzzleHttp\Cookie\SessionCookieJar;
 
 class Receita
 {
@@ -33,22 +35,47 @@ class Receita
     {
         if (!$this->cache->exists($this->cookiesRequestedKey($cnpj))) {
             $this->client->get(Config::get('receita.request'));
+            $this->cache->set($this->cookiesRequestedKey($cnpj), true);
         }
     }
 
     public function requestCaptcha($cnpj)
     {
         $this->requestCookie($cnpj);
-        $response = $this->client->get(Config::get('receita.captcha'));
+        $response = $this->client->get(Config::get('receita.captcha'), [
+            'headers' => [ 'referer' => Config::get('receita.request') ],
+        ]);
+        var_dump($response);
         if ($response->getStatusCode() !== 200) {
             return false;
         }
         return (string) $response->getBody();
     }
 
-    public function requestCnpjInfo()
+    public function requestCnpjHtml($cnpj, $captchaSolved)
     {
-        //
+        if (!$cnpj || !$captchaSolved) return false;
+        $response = $this->client->post(Config::get('receita.validation'), [
+            'form_params' => [
+                'submit1' => 'Consultar',
+                'origem' => 'comprovante',
+                'cnpj' => $cnpj,
+                'txtTexto_captcha_serpro_gov_br' => $captchaSolved,
+                'search_type' => 'cnpj',
+            ],
+            'headers' => [
+                'referer' => Config::get('receita.referer'),
+            ],
+            'cookies' => new CookieJar(false, [
+                [
+                    'Name' => 'flag',
+                    'Value' => 1,
+                    'Domain' => 'www.receita.fazenda.gov.br',
+                    'Path' => '/pessoajuridica/cnpj/cnpjreva/',
+                ],
+            ]),
+        ]);
+        return (string) $response->getBody();
     }
 
     public function cookiesRequestedKey($cnpj)
